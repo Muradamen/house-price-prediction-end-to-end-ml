@@ -9,13 +9,16 @@ import seaborn as sns
 # -----------------------------
 # 🎨 Page Config
 # -----------------------------
-st.set_page_config(page_title="House Price Predictor", page_icon="🏡", layout="wide")
+st.set_page_config(
+    page_title="House Price Predictor",
+    page_icon="🏡",
+    layout="wide"
+)
 
 # -----------------------------
 # 🎨 Custom Styling
 # -----------------------------
-st.markdown(
-    """
+st.markdown("""
     <style>
     .main {
         background-color: #0e1117;
@@ -29,10 +32,7 @@ st.markdown(
         font-size: 18px;
     }
     </style>
-""",
-    unsafe_allow_html=True,
-)
-
+""", unsafe_allow_html=True)
 
 # -----------------------------
 # 📦 Load Artifacts
@@ -44,9 +44,7 @@ def load_artifacts():
     columns = joblib.load("models/columns.pkl")
     return model, scaler, columns
 
-
 model, scaler, columns = load_artifacts()
-
 
 # -----------------------------
 # 📊 Load Dataset
@@ -55,13 +53,15 @@ model, scaler, columns = load_artifacts()
 def load_data():
     return pd.read_csv("data/train.csv")
 
-
 df = load_data()
 
 # -----------------------------
 # 📌 Sidebar Navigation
 # -----------------------------
-page = st.sidebar.radio("📌 Navigation", ["🏡 Prediction", "📊 EDA Dashboard"])
+page = st.sidebar.radio(
+    "📌 Navigation",
+    ["🏡 Prediction", "📊 EDA Dashboard"]
+)
 
 # =============================
 # 🏡 PREDICTION PAGE
@@ -117,30 +117,26 @@ if page == "🏡 Prediction":
         total_bathrooms = full_bath + 0.5 * half_bath
         total_porch = porch + deck
 
-        input_data = pd.DataFrame(
-            [
-                {
-                    "OverallQual": overall_qual,
-                    "OverallCond": overall_cond,
-                    "GrLivArea": gr_liv_area,
-                    "TotalBsmtSF": total_bsmt_sf,
-                    "1stFlrSF": first_flr_sf,
-                    "2ndFlrSF": second_flr_sf,
-                    "FullBath": full_bath,
-                    "HalfBath": half_bath,
-                    "YearBuilt": year_built,
-                    "YearRemodAdd": year_remod,
-                    "YrSold": yr_sold,
-                    "LotArea": lot_area,
-                    "GarageArea": garage_area,
-                    "Fireplaces": fireplaces,
-                    "TotalSF": total_sf,
-                    "HouseAge": house_age,
-                    "TotalBathrooms": total_bathrooms,
-                    "TotalPorchSF": total_porch,
-                }
-            ]
-        )
+        input_data = pd.DataFrame([{
+            "OverallQual": overall_qual,
+            "OverallCond": overall_cond,
+            "GrLivArea": gr_liv_area,
+            "TotalBsmtSF": total_bsmt_sf,
+            "1stFlrSF": first_flr_sf,
+            "2ndFlrSF": second_flr_sf,
+            "FullBath": full_bath,
+            "HalfBath": half_bath,
+            "YearBuilt": year_built,
+            "YearRemodAdd": year_remod,
+            "YrSold": yr_sold,
+            "LotArea": lot_area,
+            "GarageArea": garage_area,
+            "Fireplaces": fireplaces,
+            "TotalSF": total_sf,
+            "HouseAge": house_age,
+            "TotalBathrooms": total_bathrooms,
+            "TotalPorchSF": total_porch
+        }])
 
         # 🔥 Align features
         input_data = input_data.reindex(columns=columns, fill_value=0)
